@@ -39,7 +39,7 @@ class MyRVadapter(val dataset : MutableList<VideoObject> ,val  context: Context)
 
         Glide.with(context)
             .load(dataset[position].path)
-            .centerCrop()
+            .fitCenter()
             .into(holder.imageView)
 
         holder.cardView.setOnClickListener {
