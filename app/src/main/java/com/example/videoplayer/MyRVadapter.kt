@@ -2,6 +2,8 @@ package com.example.videoplayer
 
 import android.content.Context
 import android.content.Intent
+import android.media.ThumbnailUtils
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +13,16 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
-class MyRVadapter(val dataset : List<VideoObject> ,val  context: Context) : RecyclerView.Adapter<MyRVadapter.MyVH>() {
+class MyRVadapter(val dataset : MutableList<VideoObject> ,val  context: Context) : RecyclerView.Adapter<MyRVadapter.MyVH>() {
 
     inner class MyVH(itemView: View) : RecyclerView.ViewHolder(itemView){
         val textView = itemView.findViewById<TextView>(R.id.videoTitle)
         val imageView : ImageView = itemView.findViewById(R.id.videoImageView)
         val cardView : CardView = itemView.findViewById(R.id.videoCardView)
+    }
+
+    fun newData(dataset: List<VideoObject>){
+        this.dataset.addAll(dataset)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyVH {
@@ -26,7 +32,8 @@ class MyRVadapter(val dataset : List<VideoObject> ,val  context: Context) : Recy
 
     override fun onBindViewHolder(holder: MyVH, position: Int) {
         holder.textView.text = dataset[position].title
-        holder.imageView.setImageBitmap(dataset[position].bitmap)
+        val thum = ThumbnailUtils.createVideoThumbnail(dataset[position].path , MediaStore.Images.Thumbnails.FULL_SCREEN_KIND )
+        holder.imageView.setImageBitmap(thum)
 
         holder.cardView.setOnClickListener {
 
