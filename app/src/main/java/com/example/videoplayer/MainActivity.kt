@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRV(){
         findViewById<RecyclerView>(R.id.myRecyclerView).apply {
-            adapter = MyRVadapter(videoList)
+            adapter = MyRVadapter(videoList , this@MainActivity)
             layoutManager = LinearLayoutManager(this@MainActivity , LinearLayoutManager.VERTICAL , false)
 
         }
@@ -86,9 +86,6 @@ class MainActivity : AppCompatActivity() {
                     val videoObject = VideoObject(i.name , i.path.toString() , thum!! , i )
                     videoList.add(videoObject)
                     Log.d("myPath", "=  ${i.path} ")
-                    val intent = Intent(this , PlayerActivity::class.java)
-                    intent.putExtra("myPath" , i.path.toString())
-                    //startActivity(intent)
                     //Log.d("videofound = ", " ${i.name}")
                 }
             }
