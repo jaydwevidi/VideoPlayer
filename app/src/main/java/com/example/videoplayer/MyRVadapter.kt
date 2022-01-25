@@ -2,6 +2,7 @@ package com.example.videoplayer
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.ThumbnailUtils
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class MyRVadapter(val dataset : MutableList<VideoObject> ,val  context: Context) : RecyclerView.Adapter<MyRVadapter.MyVH>() {
 
@@ -32,8 +34,13 @@ class MyRVadapter(val dataset : MutableList<VideoObject> ,val  context: Context)
 
     override fun onBindViewHolder(holder: MyVH, position: Int) {
         holder.textView.text = dataset[position].title
-        val thum = ThumbnailUtils.createVideoThumbnail(dataset[position].path , MediaStore.Images.Thumbnails.FULL_SCREEN_KIND )
-        holder.imageView.setImageBitmap(thum)
+        //val thum = ThumbnailUtils.createVideoThumbnail(dataset[position].path , MediaStore.Images.Thumbnails.FULL_SCREEN_KIND )
+        //holder.imageView.setImageBitmap(thum)
+
+        Glide.with(context)
+            .load(dataset[position].path)
+            .centerCrop()
+            .into(holder.imageView)
 
         holder.cardView.setOnClickListener {
 

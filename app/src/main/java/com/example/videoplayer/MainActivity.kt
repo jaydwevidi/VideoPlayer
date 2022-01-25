@@ -55,8 +55,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d("videoList", "$videoList ")
                 findViewById<ProgressBar>(R.id.progress_circular).visibility = View.GONE
                 setupRV()
-
-
             }
 
             override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
