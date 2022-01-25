@@ -2,10 +2,14 @@ package com.example.videoplayer
 
 import android.Manifest
 import android.content.Intent
+import android.media.ThumbnailUtils
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -18,7 +22,7 @@ import kotlin.math.log
 class MainActivity : AppCompatActivity() {
     private lateinit var fileList : List<File>
     val path = File(System.getenv("EXTERNAL_STORAGE")!!)
-    val videoList = mutableListOf<File>()
+    val videoList = mutableListOf<VideoObject>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,12 +31,22 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun setupRV(){
+        findViewById<RecyclerView>(R.id.myRecyclerView).apply {
+            adapter = MyRVadapter(videoList)
+            layoutManager = LinearLayoutManager(this@MainActivity , LinearLayoutManager.VERTICAL , false)
+
+        }
+    }
+
     private fun askPermissionForStorage() {
         val permissionListner = object : PermissionListener {
             override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
                 Toast.makeText(this@MainActivity, "mil gai thanks", Toast.LENGTH_SHORT).show()
                 displayFiles(path)
                 Log.d("videoList", "$videoList ")
+                setupRV()
+
             }
 
             override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
@@ -68,11 +82,13 @@ class MainActivity : AppCompatActivity() {
                 displayFiles(i)
 
                 if(i.name.endsWith(".mp4")) {
-                    videoList.add(i)
+                    val thum = ThumbnailUtils.createVideoThumbnail(i.absolutePath , MediaStore.Images.Thumbnails.MINI_KIND )
+                    val videoObject = VideoObject(i.name , i.path.toString() , thum!! , i )
+                    videoList.add(videoObject)
                     Log.d("myPath", "=  ${i.path} ")
                     val intent = Intent(this , PlayerActivity::class.java)
                     intent.putExtra("myPath" , i.path.toString())
-                    startActivity(intent)
+                    //startActivity(intent)
                     //Log.d("videofound = ", " ${i.name}")
                 }
             }
