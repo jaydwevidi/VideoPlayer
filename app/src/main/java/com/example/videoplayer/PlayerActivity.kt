@@ -25,7 +25,6 @@ class PlayerActivity : AppCompatActivity() {
         val listnerObject = object : MediaPlayer.OnPreparedListener {
             override fun onPrepared(p0: MediaPlayer?) {
                 //Toast.makeText(this@PlayerActivity, "starting", Toast.LENGTH_SHORT).show()
-
             }
 
         }
