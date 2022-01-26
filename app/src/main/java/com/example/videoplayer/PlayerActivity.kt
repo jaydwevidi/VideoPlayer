@@ -19,8 +19,8 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
-        binding.videoView.setVideoURI(Uri.parse(intent.getStringExtra("myPath")))
+        val path = intent.getStringExtra("myPath")
+        binding.videoView.setVideoPath(path)
 
         val listnerObject = object : MediaPlayer.OnPreparedListener {
             override fun onPrepared(p0: MediaPlayer?) {
